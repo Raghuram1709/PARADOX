@@ -1,0 +1,42 @@
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  scrollbar-color: black transparent;
+
+}
+
+.grid-background {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #ffffff;
+
+  background-image:
+    radial-gradient(
+      ellipse at top left,
+      rgba(255, 235, 200, 0.35) 0%,
+      rgba(255, 255, 255, 0) 55%
+    );
+    
+}
+
+.fading-grid {
+position: fixed;
+inset: 0;
+width: 100%;
+height: 100vh;
+z-index: -1;
+pointer-events: none;
+
+background-size: 40px 40px;
+background-image:
+linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+
+mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+-webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+
+}

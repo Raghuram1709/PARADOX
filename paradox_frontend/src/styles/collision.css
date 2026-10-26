@@ -1,0 +1,57 @@
+
+.collision {
+  position: relative;
+  width: 36px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+  isolation: isolate;
+}
+
+.collision-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  animation: collide 1.8s ease-in-out infinite alternate;
+}
+
+.collision-dot.red {
+  background: #ff002b;
+  box-shadow: 0 0 10px #ff002b, 0 0 20px #ff002b;
+  animation-name: red-move;
+}
+
+.collision-dot.blue {
+  background: #0066ff;
+  box-shadow: 0 0 10px #0066ff, 0 0 20px #0066ff66;
+  animation-name: blue-move;
+}
+
+@keyframes red-move {
+  0%, 100% {
+    transform: translateX(-10px);
+    background: #ff002b;
+  }
+
+  50% {
+    transform: translateX(5px);
+    background: #e600ff;
+  }
+}
+
+@keyframes blue-move {
+  0%, 100% {
+    transform: translateX(10px);
+    background: #0066ff;
+  }
+
+  50% {
+    transform: translateX(-5px);
+    background: #e600ff;
+  }
+}
+

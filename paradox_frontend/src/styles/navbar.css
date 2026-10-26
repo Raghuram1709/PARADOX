@@ -1,0 +1,160 @@
+
+.navbar {
+  /* Positioning */
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* Responsive sizing */
+  width: 100%;
+  max-width: 1920px;
+  box-sizing: border-box;
+
+  /* Layout */
+  padding: 0.75rem clamp(1rem, 2.5vw, 2.5rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  /* Appearance */
+  background-color: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(0px);
+  border: 1px solid transparent;
+  border-radius: 0;
+
+  z-index: 999;
+
+  /* Animation */
+  transition:
+    top 0.3s ease,
+    width 0.3s ease,
+    max-width 0.3s ease,
+    padding 0.3s ease,
+    background-color 0.3s ease,
+    backdrop-filter 0.3s ease,
+    border-radius 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.navbar.scrolled {
+  top: 16px;
+  width: calc(100% - 48px);
+  max-width: 1200px;
+
+  padding: 0.75rem 1.5rem;
+
+  background-color: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 2px;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.75rem 1.25rem;
+  }
+
+  .navbar.scrolled {
+    top: 12px;
+    width: calc(100% - 32px);
+    padding: 0.65rem 1rem;
+    
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.65rem 1rem;
+  }
+
+  .navbar.scrolled {
+    top: 8px;
+    width: calc(100% - 24px);
+    padding: 0.6rem 0.85rem;
+  }
+
+  .navbar .title {
+    font-size: 1.4rem;
+  }
+}
+
+
+.nav-right {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  position: relative;
+}
+
+.new-chat{
+  font-family: "Oswald", sans-serif;
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+  border: 1px solid black;
+  box-shadow: 2px 4px 0 black;
+  cursor: pointer;
+}
+
+.history-btn {
+  font-family: "Oswald", sans-serif;
+  background: transparent;
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+  border: 1px solid black;
+  box-shadow: 2px 4px 0 black;
+  cursor: pointer;
+}
+
+
+.conversation-list {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  z-index: 1000;
+
+  background-color: rgba(255, 255, 255, 0.993);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border: 1px solid black;
+  border-radius: 2px;
+  box-shadow: 2px 4px 0 black;
+
+  /* Sizing */
+  width: 250px;
+  max-height: 300px;
+  height: auto;
+  box-sizing: border-box;
+
+  padding: 0.5rem;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+  scrollbar-color: black transparent;
+}
+
+.conversation-item {
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 2px dotted black;
+}
+
+.conversation-item:last-child {
+  border-bottom: none;
+}
+
+.conversation-item p {
+  margin: 0;
+  overflow-wrap: anywhere;
+   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
