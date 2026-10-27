@@ -1,4 +1,5 @@
 {
+  "framework": "services",
   "services": {
     "frontend": {
       "path": "paradox_frontend",
