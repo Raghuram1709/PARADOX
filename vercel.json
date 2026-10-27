@@ -1,0 +1,30 @@
+{
+  "services": {
+    "frontend": {
+      "path": "paradox_frontend",
+      "bindings": [
+        {
+          "type": "service",
+          "service": "backend",
+          "format": "url",
+          "env": "VITE_API_BASE_URL"
+        }
+      ]
+    },
+    "backend": {
+      "path": "paradox_backend"
+    }
+  },
+  "builds": [
+    {
+      "src": "paradox_backend/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "paradox_backend/index.js"
+    }
+  ]
+}
