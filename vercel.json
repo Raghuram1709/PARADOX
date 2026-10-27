@@ -1,20 +1,17 @@
 {
   "framework": "services",
   "services": {
-    "frontend": {
-      "path": "paradox_frontend",
+    "paradox_frontend": {
       "bindings": [
         {
           "type": "service",
-          "service": "backend",
+          "service": "paradox_backend",
           "format": "url",
           "env": "VITE_API_BASE_URL"
         }
       ]
     },
-    "backend": {
-      "path": "paradox_backend"
-    }
+    "paradox_backend": {}
   },
   "builds": [
     {
