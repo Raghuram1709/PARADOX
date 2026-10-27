@@ -1,7 +1,9 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "services",
   "services": {
     "paradox_frontend": {
+      "root": "paradox_frontend",
       "bindings": [
         {
           "type": "service",
@@ -11,18 +13,23 @@
         }
       ]
     },
-    "paradox_backend": {}
-  },
-  "builds": [
-    {
-      "src": "paradox_backend/index.js",
-      "use": "@vercel/node"
+    "paradox_backend": {
+      "root": "paradox_backend",
+      "entrypoint": "index.js"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "paradox_backend/index.js"
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "paradox_backend"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "paradox_frontend"
+      }
     }
   ]
 }
