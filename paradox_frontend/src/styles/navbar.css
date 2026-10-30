@@ -107,8 +107,12 @@
   border: 1px solid black;
   box-shadow: 2px 4px 0 black;
   cursor: pointer;
+  transition: boder 0.2s ease;
 }
 
+.history-btn.active {
+  border: 2px solid red;
+}
 
 .conversation-list {
   position: absolute;

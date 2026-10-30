@@ -1,6 +1,7 @@
 import { groq_client } from "../config/client.js";
 import { SYSTEM_PROMPT } from "./prompts.js";
 export const llm = async (conversation) => {
+  console.log(">>> LLM API CALLING....");
   const response = await groq_client.chat.completions.create({
     model: "qwen/qwen3.8-27b",
     messages: [
@@ -11,6 +12,9 @@ export const llm = async (conversation) => {
       ...conversation,
     ],
   });
+  if (response) {
+    console.log("got the response waiting to share");
+  }
   return response.choices[0].message.content;
 };
 

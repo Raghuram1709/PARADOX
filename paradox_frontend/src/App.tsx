@@ -5,25 +5,52 @@ import "./styles/chatmessage.css";
 import "./styles/navbar.css";
 import "./styles/collision.css";
 import ChatHistory from "./components/ChatHistory";
-import { useAppDispatch } from "./store/hooks";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { clearActiveConversationId } from "./features/chat/conversationSlice";
 import { motion } from "motion/react";
-
+import { useNavigate, useParams } from "react-router-dom";
+import { initiateSessionId, loadConversation } from "./features/chat/chatThunk";
 
 const App = () => {
   const [scrolled, setScroll] = useState(false);
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    const handleScroll = () => {
-      setScroll(window.scrollY > 30);
 
-    }
-    window.addEventListener("scroll", handleScroll, {passive: true});
+  const { conversationId } = useParams();
+  console.log("conversation id from app.", conversationId);
+  
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  },[])
+  const sessionId = useAppSelector((state) => state.conversation.sessionId);
+  
+  console.log(">> sessionId:", sessionId);
+ 
+useEffect(() => {
+  if (!sessionId) {
+    dispatch(initiateSessionId());
+  }
+}, [sessionId, dispatch]);
+
+useEffect(() => {
+  if (sessionId && conversationId) {
+    dispatch(loadConversation(sessionId, conversationId));
+  }
+}, [sessionId, conversationId, dispatch]);
+
+useEffect(() => {
+  const handleScroll = () => {
+    setScroll(window.scrollY > 30);
+  };
+
+  window.addEventListener("scroll", handleScroll, {
+    passive: true,
+  });
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, []);
+
+
   return (
     <>
       <nav className={scrolled ? "navbar scrolled": "navbar"}>
@@ -38,7 +65,8 @@ const App = () => {
               scale:1.02
             }}
             className="new-chat" onClick={() => {
-            dispatch(clearActiveConversationId());
+              dispatch(clearActiveConversationId());
+              navigate("/");
           }}>New Chat</motion.p>
           <ChatHistory />
         </div>

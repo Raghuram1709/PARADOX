@@ -158,9 +158,7 @@ text-decoration: underline;
   border-bottom: 2px dotted black;
 }
 
-.conversation-item.active {
-  box-shadow: 2px 1px 4px  ;
-}
+
 
 .conversation-item:last-child {
   border-bottom: none;
@@ -176,5 +174,10 @@ text-decoration: underline;
   font-family: "Uncial", sans-serif;
 }
 
-
+.conversation-item.active{
+  .item-title{
+    color: red;
+    
+  }
+}
 

@@ -4,11 +4,16 @@ import "../../styles/chatinput.css";
 import { sendMessage } from "../../features/chat/chatThunk";
 import { useAppDispatch,} from "../../store/hooks";
 import { PiixPal } from "piixpal/react";
+import { useNavigate } from "react-router-dom";
+
 const ChatInput = () => {
   const [text, setText] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const trimmedText = text.trim();
+
   useLayoutEffect(() => {
     const textarea = textareaRef.current;
 
@@ -38,7 +43,8 @@ const ChatInput = () => {
   const handleSend = async () => {
     if (trimmedText) {
       setText("")
-      await dispatch(sendMessage(text))
+      const conversationId = await dispatch(sendMessage(text))
+      navigate(`/${conversationId}`)
       }
   }
   
@@ -50,7 +56,7 @@ const ChatInput = () => {
         value={text}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        placeholder="Enter your idea..."
+        placeholder="Ask Anything..."
         rows={1}
         className="chatinput-textarea"
       />

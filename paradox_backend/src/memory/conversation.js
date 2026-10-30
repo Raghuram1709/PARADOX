@@ -1,17 +1,48 @@
+
 class ChatMemory {
   constructor() {
-    this.conversations = new Map();
+    // sessionId -> { conversations: Map }
+    this.sessions = new Map();
   }
 
-  addMessage(conversationId, role, content) {
-    if (!this.conversations.has(conversationId)) {
-      this.conversations.set(conversationId, {
+  // Create a session if it doesn't exist.
+  createSession(sessionId) {
+    if (!this.sessions.has(sessionId)) {
+      this.sessions.set(sessionId, {
+        conversations: new Map(),
+      });
+    }
+
+    return this.sessions.get(sessionId);
+  }
+
+  // Create a conversation inside a session.
+  createConversation(sessionId, conversationId) {
+    const session = this.createSession(sessionId);
+
+    if (!session.conversations.has(conversationId)) {
+      session.conversations.set(conversationId, {
         title: "New Conversation",
         messages: [],
       });
     }
 
-    const conversation = this.conversations.get(conversationId);
+    return session.conversations.get(conversationId);
+  }
+
+  // Add a message to a specific conversation.
+  addMessage(sessionId, conversationId, role, content) {
+    const session = this.sessions.get(sessionId);
+
+    if (!session) {
+      throw new Error("Session not found");
+    }
+
+    const conversation = session.conversations.get(conversationId);
+
+    if (!conversation) {
+      throw new Error("Conversation not found");
+    }
 
     conversation.messages.push({
       role,
@@ -19,20 +50,47 @@ class ChatMemory {
     });
   }
 
-  getMessages(conversationId) {
-    return this.conversations.get(conversationId)?.messages || [];
+  // Get messages from a specific conversation.
+  getMessages(sessionId, conversationId) {
+    const session = this.sessions.get(sessionId);
+
+    if (!session) {
+      return [];
+    }
+
+    return (
+      session.conversations.get(conversationId)?.messages || []
+    );
   }
 
-  getConversation(conversationId) {
-    return this.conversations.get(conversationId) || null;
+  // Get one conversation.
+  getConversation(sessionId, conversationId) {
+    const session = this.sessions.get(sessionId);
+
+    if (!session) {
+      return null;
+    }
+
+    return session.conversations.get(conversationId) || null;
   }
 
-  getAllConversations() {
-    return Object.fromEntries(this.conversations);
+  // Get all conversations belonging to one session.
+  getAllConversations(sessionId) {
+    const session = this.sessions.get(sessionId);
+
+    if (!session) {
+      return {};
+    }
+
+    return Object.fromEntries(session.conversations);
   }
 
-  updateTitle(conversationId, newTitle) {
-    const conversation = this.conversations.get(conversationId);
+  // Update a conversation title.
+  updateTitle(sessionId, conversationId, newTitle) {
+    const conversation = this.getConversation(
+      sessionId,
+      conversationId
+    );
 
     if (conversation) {
       conversation.title = newTitle;
@@ -43,3 +101,4 @@ class ChatMemory {
 const memory = new ChatMemory();
 
 export default memory;
+;
