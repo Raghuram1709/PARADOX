@@ -32,8 +32,7 @@
   font-size: 1.05rem;
   font-family: "Overlock", sans-serif;
   line-height: 1.5;
-  color: blue;
-  font-weight: bold;
+  
   background: none;
 }
 
@@ -53,7 +52,6 @@
 
 .chatinput-textarea::placeholder {
   font-family: "Uncial", sans-serif;
-  color: blue;
   font-weight: lighter;
   opacity: 0.5;
 }
