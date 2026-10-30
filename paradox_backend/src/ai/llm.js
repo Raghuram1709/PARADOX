@@ -1,7 +1,7 @@
 import { groq_client } from "../config/client.js";
 import { SYSTEM_PROMPT } from "./prompts.js";
 export const llm = async (conversation) => {
-  console.log(">>> LLM API CALLING....");
+  
   const response = await groq_client.chat.completions.create({
     model: "qwen/qwen3.8-27b",
     messages: [
@@ -12,15 +12,10 @@ export const llm = async (conversation) => {
       ...conversation,
     ],
   });
-  if (response) {
-    console.log("got the response waiting to share");
-  }
   return response.choices[0].message.content;
 };
 
 export const titleGenerateLLm = async (conversation) => {
-  console.log("enter the titlegenerationllm");
-  
   const conversationText = conversation
     .map((msg) => `${msg.role}: ${msg.content}`)
     .join("\n");

@@ -1,4 +1,3 @@
-
 import memory from "../memory/conversation.js";
 import { llm, titleGenerateLLm } from "../ai/llm.js";
 
@@ -8,13 +7,11 @@ export const chatService = async (
   message
 ) => {
   try {
-    // 1. Ensure the session exists.
+
     memory.createSession(sessionId);
 
-    // 2. Ensure the conversation exists in this session.
     memory.createConversation(sessionId, conversationId);
 
-    // 3. Store the user's message.
     memory.addMessage(
       sessionId,
       conversationId,
@@ -22,7 +19,6 @@ export const chatService = async (
       message
     );
 
-    // 4. Retrieve this conversation's messages.
     const messages = memory.getMessages(
       sessionId,
       conversationId
@@ -33,11 +29,6 @@ export const chatService = async (
       conversationId
     );
 
-    console.log("Messages:", messages);
-    console.log("Message count:", messages.length);
-    console.log("Title:", conversation.title);
-
-    // 5. Generate a title after enough messages.
     if (
       messages.length >= 5 &&
       conversation.title === "New Conversation"
@@ -55,18 +46,14 @@ export const chatService = async (
       }
     }
 
-    // 6. Generate the AI response.
     const response = await llm(messages);
 
-    // 7. Store the assistant's response.
     memory.addMessage(
       sessionId,
       conversationId,
       "assistant",
       response
     );
-
-    // 8. Return only this session's conversations.
     
     return {
       sessionId,
@@ -74,7 +61,6 @@ export const chatService = async (
       conversations: memory.getAllConversations(sessionId),
     };
   } catch (error) {
-    console.error("Chat service error:", error);
     throw error;
   }
 };

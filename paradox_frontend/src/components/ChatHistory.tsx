@@ -87,7 +87,6 @@ const ChatHistory = () => {
                   onClick={() => {
                     dispatch(setActiveConversation(id));
                     navigate(`/${id}`)
-                    console.log("id clicked:", id);
                   }}
                   className="item-title"
                 >

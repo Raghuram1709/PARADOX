@@ -1,24 +1,73 @@
-
 class ChatMemory {
   constructor() {
-    // sessionId -> { conversations: Map }
     this.sessions = new Map();
+
+    this.SESSION_TTL = 24 * 60 * 60 * 1000;
+
+    this.sessionTimers = new Map();
   }
 
-  // Create a session if it doesn't exist.
+  isExpired(session) {
+    return Date.now() >= session.expiresAt;
+  }
+
   createSession(sessionId) {
-    if (!this.sessions.has(sessionId)) {
-      this.sessions.set(sessionId, {
-        conversations: new Map(),
-      });
+    const existingSession = this.getSession(sessionId);
+
+    if (existingSession) {
+      return existingSession;
     }
 
-    return this.sessions.get(sessionId);
+    const now = Date.now();
+
+    const session = {
+      createdAt: now,
+      expiresAt: now + this.SESSION_TTL,
+      conversations: new Map(),
+    };
+
+    this.sessions.set(sessionId, session);
+
+    const timer = setTimeout(() => {
+      this.clearSession(sessionId);
+    }, this.SESSION_TTL);
+
+    timer.unref();
+
+    this.sessionTimers.set(sessionId, timer);
+
+    return session;
   }
 
-  // Create a conversation inside a session.
+  getSession(sessionId) {
+    const session = this.sessions.get(sessionId);
+
+    if (!session) {
+      return null;
+    }
+
+    if (this.isExpired(session)) {
+      this.clearSession(sessionId);
+      return null;
+    }
+
+    return session;
+  }
+
+  clearSession(sessionId) {
+    const timer = this.sessionTimers.get(sessionId);
+
+    if (timer) {
+      clearTimeout(timer);
+      this.sessionTimers.delete(sessionId);
+    }
+
+    this.sessions.delete(sessionId);
+  }
+
   createConversation(sessionId, conversationId) {
-    const session = this.createSession(sessionId);
+    const session =
+      this.getSession(sessionId) || this.createSession(sessionId);
 
     if (!session.conversations.has(conversationId)) {
       session.conversations.set(conversationId, {
@@ -30,12 +79,11 @@ class ChatMemory {
     return session.conversations.get(conversationId);
   }
 
-  // Add a message to a specific conversation.
   addMessage(sessionId, conversationId, role, content) {
-    const session = this.sessions.get(sessionId);
+    const session = this.getSession(sessionId);
 
     if (!session) {
-      throw new Error("Session not found");
+      throw new Error("Session not found or expired");
     }
 
     const conversation = session.conversations.get(conversationId);
@@ -50,9 +98,8 @@ class ChatMemory {
     });
   }
 
-  // Get messages from a specific conversation.
   getMessages(sessionId, conversationId) {
-    const session = this.sessions.get(sessionId);
+    const session = this.getSession(sessionId);
 
     if (!session) {
       return [];
@@ -63,20 +110,8 @@ class ChatMemory {
     );
   }
 
-  // Get one conversation.
-  getConversation(sessionId, conversationId) {
-    const session = this.sessions.get(sessionId);
-
-    if (!session) {
-      return null;
-    }
-
-    return session.conversations.get(conversationId) || null;
-  }
-
-  // Get all conversations belonging to one session.
   getAllConversations(sessionId) {
-    const session = this.sessions.get(sessionId);
+    const session = this.getSession(sessionId);
 
     if (!session) {
       return {};
@@ -85,7 +120,16 @@ class ChatMemory {
     return Object.fromEntries(session.conversations);
   }
 
-  // Update a conversation title.
+  getConversation(sessionId, conversationId) {
+    const session = this.getSession(sessionId);
+
+    if (!session) {
+      return null;
+    }
+
+    return session.conversations.get(conversationId) || null;
+  }
+
   updateTitle(sessionId, conversationId, newTitle) {
     const conversation = this.getConversation(
       sessionId,
@@ -101,4 +145,4 @@ class ChatMemory {
 const memory = new ChatMemory();
 
 export default memory;
-;
+

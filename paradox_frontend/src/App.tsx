@@ -15,14 +15,11 @@ const App = () => {
   const [scrolled, setScroll] = useState(false);
 
   const { conversationId } = useParams();
-  console.log("conversation id from app.", conversationId);
-  
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const sessionId = useAppSelector((state) => state.conversation.sessionId);
   
-  console.log(">> sessionId:", sessionId);
  
 useEffect(() => {
   if (!sessionId) {

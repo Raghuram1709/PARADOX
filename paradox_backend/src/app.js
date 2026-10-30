@@ -9,9 +9,11 @@ app.use(
   }),
 );
 app.use(express.json())
+
 app.get("/", (req, res) => {
   res.send("API Running");
 });
+
 app.use("/", chatRoute)
 
 export default app;

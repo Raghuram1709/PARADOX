@@ -1,13 +1,6 @@
-import {
-  createSlice,
-  type PayloadAction,
-} from "@reduxjs/toolkit";
+import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 
-import type {
-  Conversation,
-  ConversationState,
-  Message,
-} from "./chatTypes";
+import type { Conversation, ConversationState, Message,} from "./chatTypes";
 
 const initialState: ConversationState = {
   conversations: {},

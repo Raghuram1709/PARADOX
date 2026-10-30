@@ -59,8 +59,6 @@ export const sendMessageAPI = async (
 };
 
 
-
-// Get all conversations belonging to a session.
 export const getConversationsAPI = async (
   sessionId: string,
 ): Promise<Record<string, Conversation>> => {
@@ -81,32 +79,7 @@ export const getConversationsAPI = async (
   if (!result.success) {
     throw new Error("Failed to load conversations.");
   }
-  console.log(">>> result from serve:", result.data);
   
   return result.data;
 };
 
-// Get one conversation and its messages.
-export const getConversationAPI = async (
-  sessionId: string,
-  conversationId: string,
-) => {
-  const response = await fetch(
-    `${API_BASE_URL}/conversation/${encodeURIComponent(sessionId)}/${encodeURIComponent(conversationId)}`,
-    {
-      method: "GET",
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error(await getErrorMessage(response));
-  }
-
-  const result = await response.json();
-
-  if (!result.success) {
-    throw new Error("Failed to load conversation.");
-  }
-
-  return result.data;
-};
